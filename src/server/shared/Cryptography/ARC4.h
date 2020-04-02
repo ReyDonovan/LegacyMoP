@@ -32,8 +32,8 @@ struct RC4_Context
 class ARC4
 {
     public:
-        ARC4(uint8 len);
-        ARC4(uint8 *seed, uint8 len);
+        ARC4(uint32 len);
+        ARC4(uint8 *seed, uint32 len);
         ~ARC4();
         void Init(uint8 *seed);
         void UpdateData(int len, uint8 *data);
@@ -41,7 +41,7 @@ class ARC4
         static void rc4_init(RC4_Context * ctx, const uint8 * seed, int seedlen);
         static void rc4_process(RC4_Context * ctx, uint8 * data, int datalen);
     private:
-        EVP_CIPHER_CTX m_ctx;
+        EVP_CIPHER_CTX* m_ctx;
 };
 
 #endif
