@@ -27,7 +27,7 @@
 #include "Database/DatabaseEnv.h"
 #include "Configuration/Config.h"
 #include "Log.h"
-#include "SystemConfig.h"
+#include "GitRevision.h"
 #include "Util.h"
 #include "SignalHandler.h"
 #include "RealmList.h"
@@ -98,7 +98,7 @@ extern int main(int argc, char **argv)
     }
 
     sLog->Initialize(nullptr);
-    TC_LOG_INFO("server", "%s (authserver)", _FULLVERSION);
+    TC_LOG_INFO("server", "%s (authserver)", GitRevision::GetFullVersion());
     TC_LOG_INFO("server", "<Ctrl-C> to stop.\n");
     TC_LOG_INFO("server", "Using configuration file %s.", cfg_file);
 

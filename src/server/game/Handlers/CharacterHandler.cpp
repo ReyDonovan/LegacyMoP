@@ -20,7 +20,7 @@
 #include "ObjectAccessor.h"
 #include "ObjectMgr.h"
 #include "GuildMgr.h"
-#include "SystemConfig.h"
+#include "GitRevision.h"
 #include "World.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
@@ -960,7 +960,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
 
         // send server info
         if (sWorld->getIntConfig(CONFIG_ENABLE_SINFO_LOGIN) == 1)
-            chH.PSendSysMessage(_FULLVERSION);
+            chH.PSendSysMessage("%s", GitRevision::GetFullVersion());
 
         TC_LOG_DEBUG("network", "WORLD: Sent server info");
     }
