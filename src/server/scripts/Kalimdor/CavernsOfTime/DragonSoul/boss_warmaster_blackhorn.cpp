@@ -3,6 +3,7 @@
 #include "MoveSplineInit.h"
 #include "boss_warmaster_blackhorn.h"
 #include "ObjectVisitors.hpp"
+#include "UnaryFunction.h"
 
 enum ScriptedTextBlackhorn
 {
@@ -769,7 +770,7 @@ class npc_warmaster_blackhorn_goriona: public CreatureScript
             EventMap events;
             uint8 phase;
 
-            struct TwilightFlamesSelector : public Trinity::unary_function<Unit*, bool>
+            struct TwilightFlamesSelector : public TC_UNARY_FUNCTION<Unit*, bool>
             {
                 public:
                     

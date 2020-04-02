@@ -1,4 +1,5 @@
 #include "ScriptPCH.h"
+#include "UnaryFunction.h"
 #include "end_time.h"
 
 enum Yells
@@ -183,7 +184,7 @@ class boss_echo_of_baine : public CreatureScript
                 DoMeleeAttackIfReady();
             }
         private:
-            struct PositionSelector : public Trinity::unary_function<Unit*, bool>
+            struct PositionSelector : public TC_UNARY_FUNCTION<Unit*, bool>
             {
                 public:
                     

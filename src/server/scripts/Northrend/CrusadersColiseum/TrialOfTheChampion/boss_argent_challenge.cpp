@@ -23,6 +23,7 @@ SDCategory: Trial of the Champion
 EndScriptData */
 
 #include "NorthrendPCH.h"
+#include "UnaryFunction.h"
 #include "trial_of_the_champion.h"
 
 enum Spells
@@ -95,7 +96,7 @@ enum Says
     SAY_PALETRESS_NIGHTMARE_WARNING     = 6
 };
 
-class OrientationCheck : public Trinity::unary_function<Unit*, bool>
+class OrientationCheck : public TC_UNARY_FUNCTION<Unit*, bool>
 {
     public:
         explicit OrientationCheck(Unit* _caster) : caster(_caster) { }

@@ -3,6 +3,7 @@
 #include "boss_ragnaros_firelands.h"
 #include "Group.h"
 #include "ObjectVisitors.hpp"
+#include "UnaryFunction.h"
 
 enum ScriptTextsRagnaros
 {
@@ -1561,7 +1562,7 @@ class npc_ragnaros_firelands_lava_scion : public CreatureScript
         private:
             EventMap events;
 
-            struct BlazingHeatSelector : public Trinity::unary_function<Unit*, bool>
+            struct BlazingHeatSelector : public TC_UNARY_FUNCTION<Unit*, bool>
             {
                 public:
                     

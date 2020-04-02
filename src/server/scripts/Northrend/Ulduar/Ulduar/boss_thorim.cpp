@@ -23,6 +23,7 @@ SDComments: Lightning Charge not works.
 EndScriptData */
 
 #include "NorthrendPCH.h"
+#include "UnaryFunction.h"
 #include "ulduar.h"
 
 // Thorim Spells
@@ -995,7 +996,7 @@ public:
 
 };
 
-class OrbCheck : public Trinity::unary_function<WorldObject*, bool>
+class OrbCheck : public TC_UNARY_FUNCTION<WorldObject*, bool>
 {
     public:
         explicit OrbCheck(WorldObject* _caster) : caster(_caster) { }

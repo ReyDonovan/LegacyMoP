@@ -19,6 +19,7 @@
 #include "NorthrendPCH.h"
 #include "icecrown_citadel.h"
 #include "ObjectVisitors.hpp"
+#include "UnaryFunction.h"
 
 enum Texts
 {
@@ -163,7 +164,7 @@ const Position Pos[] =
 
 Position const ValithriaSpawnPos = {4210.813f, 2484.443f, 364.9558f, 0.01745329f};
 
-struct ManaVoidSelector : public Trinity::unary_function<Unit*, bool>
+struct ManaVoidSelector : public TC_UNARY_FUNCTION<Unit*, bool>
 {
         explicit ManaVoidSelector(WorldObject const* source) : _source(source) { }
 

@@ -25,6 +25,7 @@
 #include "SpellScript.h"
 #include "SpellAuraEffects.h"
 #include "GridNotifiers.h"
+#include <random>
 
 enum MonkSpells
 {
@@ -163,7 +164,7 @@ class spell_monk_storm_earth_and_fire : public SpellScriptLoader
                     id.push_back(138121);
                     id.push_back(138122);
                     id.push_back(138123);
-                    std::random_shuffle(id.begin(), id.end());
+                    std::shuffle(id.begin(), id.end(), std::default_random_engine{});
 
                     if (Aura* aura = caster->GetAura(137639))
                         CheckTarget(aura->GetStackAmount() > 1, caster, target);

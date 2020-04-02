@@ -24,6 +24,7 @@
 #include "ScriptMgr.h"
 #include "SpellScript.h"
 #include "SpellAuraEffects.h"
+#include <random>
 
 enum DeathKnightSpells
 {
@@ -675,7 +676,7 @@ class spell_dk_blood_tap : public SpellScriptLoader
                         }
 
 
-                        std::random_shuffle(CDrunesList.begin(), CDrunesList.end());
+                        std::shuffle(CDrunesList.begin(), CDrunesList.end(), std::default_random_engine{});
                         for (auto itr : CDrunesList)
                         {
                             _player->SetRuneCooldown(itr, 0);
@@ -1532,7 +1533,7 @@ class spell_dk_blood_boil : public SpellScriptLoader
                     if (RoilingBloodTargetGuids.empty())
                         return;
 
-                    std::random_shuffle(RoilingBloodTargetGuids.begin(), RoilingBloodTargetGuids.end());
+                    std::shuffle(RoilingBloodTargetGuids.begin(), RoilingBloodTargetGuids.end(), std::default_random_engine{});
                     for (std::vector<uint64>::const_iterator Itr = RoilingBloodTargetGuids.begin(); Itr != RoilingBloodTargetGuids.end(); ++Itr)
                     {
                         if (Unit* target = _player->GetUnit(*_player, *Itr))

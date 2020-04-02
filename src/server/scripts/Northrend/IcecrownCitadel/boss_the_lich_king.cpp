@@ -29,6 +29,7 @@
 #include "CreatureTextMgr.h"
 #include "icecrown_citadel.h"
 #include "ObjectVisitors.hpp"
+#include "UnaryFunction.h"
 
 enum Texts
 {
@@ -387,7 +388,7 @@ Player *SelectRandomAttackablePlayerInTheMap(Map *pMap)
     return SelectRandomPlayerFromList(players);
 }
 
-class NecroticPlagueTargetCheck : public Trinity::unary_function<Unit*, bool>
+class NecroticPlagueTargetCheck : public TC_UNARY_FUNCTION<Unit*, bool>
 {
     public:
         NecroticPlagueTargetCheck(Unit const* obj, uint32 notAura1 = 0, uint32 notAura2 = 0)
