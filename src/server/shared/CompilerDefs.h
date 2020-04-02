@@ -42,6 +42,11 @@
 #define COMPILER_BORLAND   2
 #define COMPILER_INTEL     3
 
+#if defined _MSC_VER && _MSC_VER >= 1910
+#include <stack>
+#include <ratio>
+#endif
+
 #ifdef _MSC_VER
 #  define COMPILER COMPILER_MICROSOFT
 #elif defined( __BORLANDC__ )
@@ -52,6 +57,22 @@
 #  define COMPILER COMPILER_GNU
 #else
 #  pragma error "FATAL ERROR: Unknown compiler."
+#endif
+
+#if defined(__cplusplus) && __cplusplus == 201103L
+#  define COMPILER_HAS_CPP11_SUPPORT 1
+#else
+#  define COMPILER_HAS_CPP11_SUPPORT 0
+#endif
+
+#if defined(__cplusplus) && __cplusplus == 201402L
+#  define COMPILER_HAS_CPP14_SUPPORT 1
+#else
+#  define COMPILER_HAS_CPP14_SUPPORT 0
+#endif
+
+#if COMPILER == COMPILER_MICROSOFT && _MSC_VER >= 1910 && _HAS_CXX17
+#define ACE_LACKS_AUTO_PTR 1
 #endif
 
 #if COMPILER == COMPILER_MICROSOFT

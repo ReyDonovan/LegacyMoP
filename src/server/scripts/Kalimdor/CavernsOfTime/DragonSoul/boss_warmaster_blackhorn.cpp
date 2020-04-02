@@ -769,7 +769,7 @@ class npc_warmaster_blackhorn_goriona: public CreatureScript
             EventMap events;
             uint8 phase;
 
-            struct TwilightFlamesSelector : public std::unary_function<Unit*, bool>
+            struct TwilightFlamesSelector : public Trinity::unary_function<Unit*, bool>
             {
                 public:
                     

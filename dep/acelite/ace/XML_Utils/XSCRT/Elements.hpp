@@ -151,7 +151,7 @@ namespace XSCRT
     {
       if (map_.get () == 0)
       {
-        map_ = std::auto_ptr<Map_> (new Map_);
+        map_ = std::unique_ptr<Map_> (new Map_);
       }
 
       if (!map_->insert (
@@ -257,7 +257,7 @@ namespace XSCRT
     std::map<IdentityProvider const*, Type*, IdentityComparator>
     Map_;
 
-    std::auto_ptr<Map_> map_;
+    std::unique_ptr<Map_> map_;
   };
 
   // Fundamental types template.

@@ -138,7 +138,7 @@ private:
   /// failed.  This is used internal to print out the error to the log,
   /// but since this object is shared, we can't store or return the error
   /// to the caller.
-  auto_ptr <ACE_TString> error (void);
+   std::unique_ptr<ACE_TString> error (void);
 
   /// Builds array of DLL names to try to dlopen, based on platform
   /// and configured DLL prefixes/suffixes.

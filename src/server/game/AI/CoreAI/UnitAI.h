@@ -22,6 +22,7 @@
 #include "Define.h"
 #include "Unit.h"
 #include "Containers.h"
+#include "UnaryFunction.h"
 #include <list>
 
 class Unit;
@@ -50,7 +51,7 @@ enum SelectAggroTarget
 };
 
 // default predicate function to select target based on distance, player and/or aura criteria
-struct DefaultTargetSelector : public std::unary_function<Unit*, bool>
+struct DefaultTargetSelector : public TC_UNARY_FUNCTION<Unit*, bool>
 {
     const Unit* me;
     float m_dist;
@@ -100,7 +101,7 @@ struct DefaultTargetSelector : public std::unary_function<Unit*, bool>
 
 // Target selector for spell casts checking range, auras and attributes
 // TODO: Add more checks from Spell::CheckCast
-struct SpellTargetSelector : public std::unary_function<Unit*, bool>
+struct SpellTargetSelector : public TC_UNARY_FUNCTION<Unit*, bool>
 {
     public:
         SpellTargetSelector(Unit* caster, uint32 spellId);
@@ -114,7 +115,7 @@ struct SpellTargetSelector : public std::unary_function<Unit*, bool>
 // Very simple target selector, will just skip main target
 // NOTE: When passing to UnitAI::SelectTarget remember to use 0 as position for random selection
 //       because tank will not be in the temporary list
-struct NonTankTargetSelector : public std::unary_function<Unit*, bool>
+struct NonTankTargetSelector : public TC_UNARY_FUNCTION<Unit*, bool>
 {
     public:
         NonTankTargetSelector(Creature* source, bool playerOnly = true) : _source(source), _playerOnly(playerOnly) { }
@@ -125,7 +126,7 @@ struct NonTankTargetSelector : public std::unary_function<Unit*, bool>
         bool _playerOnly;
 };
 
-struct TankTargetSelector : public std::unary_function<Unit*, bool>
+struct TankTargetSelector : public TC_UNARY_FUNCTION<Unit*, bool>
 {
     public:
         TankTargetSelector(Creature* source, bool playerOnly = true) : _source(source), _playerOnly(playerOnly) { }

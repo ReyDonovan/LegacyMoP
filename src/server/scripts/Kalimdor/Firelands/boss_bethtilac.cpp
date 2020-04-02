@@ -95,7 +95,7 @@ const Position addsPos[9] =
     {59.665f, 406.437f, 111.0f, 5.02f}
 };
 
-struct PositionSelector : public std::unary_function<Unit*, bool>
+struct PositionSelector : public Trinity::unary_function<Unit*, bool>
 {
     public:
         

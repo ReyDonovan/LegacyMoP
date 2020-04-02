@@ -237,6 +237,13 @@ namespace Trinity
     {
         return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
     }
+
+    template<class ArgumentType, class ResultType>
+    struct unary_function
+    {
+        typedef ArgumentType argument_type;
+        typedef ResultType result_type;
+    };
 }
 
 #endif

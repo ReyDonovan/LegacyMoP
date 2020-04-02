@@ -375,12 +375,12 @@ ACE_DLL_Handle::get_handle (int become_owner)
 
 // This method is used return the last error of a library operation.
 
-auto_ptr <ACE_TString>
+std::unique_ptr<ACE_TString>
 ACE_DLL_Handle::error (void)
 {
   ACE_TRACE ("ACE_DLL_Handle::error");
   const ACE_TCHAR *error = ACE_OS::dlerror ();
-  auto_ptr<ACE_TString> str
+  std::unique_ptr<ACE_TString> str
     (new ACE_TString (error ? error : ACE_TEXT ("no error")));
   return str;
 }

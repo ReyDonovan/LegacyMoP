@@ -34,7 +34,7 @@ endif()
 
 if(_GIT_VERSION_OK)
   execute_process(
-    COMMAND "${_GIT_EXEC}" describe --match init --dirty=+ --abbrev=12
+    COMMAND "${_GIT_EXEC}" describe --match init --dirty=+ --abbrev=12 --always
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
     OUTPUT_VARIABLE rev_info
     OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -72,7 +72,7 @@ if(NOT BUILDDIR)
 endif()
 
 # Create the actual revision.h file from the above params
-if(NOT "${rev_hash_cached}" MATCHES "${rev_hash}")
+if(NOT "${rev_hash_cached}" STREQUAL "${rev_hash}")
   configure_file(
     "${CMAKE_SOURCE_DIR}/revision.h.in.cmake"
     "${BUILDDIR}/revision.h"
