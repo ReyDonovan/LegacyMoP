@@ -1,9 +1,9 @@
 # output generic information about the core and buildtype chosen
 message("")
-message("* UWOWCore rev. hash  : ${rev_hash}")
-message("* UWOWCore rev. date  : ${rev_date}")
+message("* LegacyProjectMoP rev. hash  : ${rev_hash}")
+message("* LegacyProjectMoP rev. date  : ${rev_date}")
 if( UNIX )
-  message("* UWOWCore buildtype  : ${CMAKE_BUILD_TYPE}")
+  message("* LegacyProjectMoP buildtype  : ${CMAKE_BUILD_TYPE}")
 endif()
 message("")
 

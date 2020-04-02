@@ -48,7 +48,7 @@ HmacHash::~HmacHash()
 
 void HmacHash::UpdateData(std::string const& str)
 {
-    HMAC_Update(reinterpret_cast<uint8 const*>(str.c_str()), str.length());
+    HMAC_Update(m_ctx, (uint8 const*)str.c_str(), str.length());
 }
 
 void HmacHash::Finalize()
