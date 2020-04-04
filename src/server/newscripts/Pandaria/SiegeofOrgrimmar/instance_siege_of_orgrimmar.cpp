@@ -6,6 +6,7 @@
 #include "siege_of_orgrimmar.h"
 #include "AccountMgr.h"
 #include "Transport.h"
+#include <random>
 
 Position const LorewalkerChoSpawn[5]  = {
     {1448.236f, 312.6528f, 289.2837f, 4.652967f},
@@ -2064,7 +2065,7 @@ public:
             for (std::vector<uint64>::const_iterator itr = edoubtGuids.begin(); itr != edoubtGuids.end(); itr++)
                 if (Creature* add = instance->GetCreature(*itr))
                     add->RemoveAurasDueToSpell(SPELL_CONSUMED_FAITH);
-            std::random_shuffle(edoubtGuids.begin(), edoubtGuids.end());
+            std::shuffle(edoubtGuids.begin(), edoubtGuids.end(), std::default_random_engine{});
             uint8 count = instance->Is25ManRaid() ? 8 : 3;
             for (uint8 n = 0; n < count; n++)
                 if (Creature* add = instance->GetCreature(edoubtGuids[n]))
@@ -2076,7 +2077,7 @@ public:
             for (std::vector<uint64>::const_iterator itr = efearGuids.begin(); itr != efearGuids.end(); itr++)
                 if (Creature* add = instance->GetCreature(*itr))
                     add->RemoveAurasDueToSpell(SPELL_CONSUMED_COURAGE);
-            std::random_shuffle(efearGuids.begin(), efearGuids.end());
+            std::shuffle(efearGuids.begin(), efearGuids.end(), std::default_random_engine{});
             uint8 count = instance->Is25ManRaid() ? 25 : 10;
             for (uint8 n = 0; n < count; n++)
                 if (Creature* add = instance->GetCreature(efearGuids[n]))

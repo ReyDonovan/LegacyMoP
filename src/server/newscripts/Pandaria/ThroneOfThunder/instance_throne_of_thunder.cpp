@@ -4,6 +4,7 @@
 #include "NewScriptPCH.h"
 #include "VMapFactory.h"
 #include "throne_of_thunder.h"
+#include <random>
 
 const DoorData doorData[] =
 {
@@ -1103,7 +1104,7 @@ public:
                             for (std::list<Player*>::const_iterator Itr = pllist.begin(); Itr != pllist.end(); Itr++)
                                 _pllist.push_back((*Itr)->GetGUID());
                             pllist.clear();
-                            std::random_shuffle(_pllist.begin(), _pllist.end());
+                            std::shuffle(_pllist.begin(), _pllist.end(), std::default_random_engine{});
                             if (_pllist.size() > maxsize)
                                 _pllist.resize(maxsize);
                             for (std::vector<uint64>::const_iterator itr = _pllist.begin(); itr != _pllist.end(); itr++)

@@ -18,6 +18,7 @@
 
 #include "NewScriptPCH.h"
 #include "siege_of_orgrimmar.h"
+#include <random>
 
 enum eSpells
 {
@@ -642,7 +643,7 @@ class boss_thok_the_bloodthirsty : public CreatureScript
 
                     if (!_pllist.empty())
                     {
-                        std::random_shuffle(_pllist.begin(), _pllist.end());
+                        std::shuffle(_pllist.begin(), _pllist.end(), std::default_random_engine{});
                         std::vector<uint64>::const_iterator itr = _pllist.begin();
                         std::advance(itr, urand(0, _pllist.size() - 1));
                         return *itr;

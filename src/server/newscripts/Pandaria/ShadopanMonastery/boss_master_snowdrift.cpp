@@ -17,6 +17,7 @@
  */
 #include "NewScriptPCH.h"
 #include "shadopan_monastery.h"
+#include <random>
 
 enum eSay
 {
@@ -433,7 +434,7 @@ class boss_master_snowdrift : public CreatureScript
                         {
                             std::vector<uint8> randomIndex;
                             for (int i = 0; i < 3; ++i) randomIndex.push_back(i); // 0 1 2
-                            std::random_shuffle(randomIndex.begin(), randomIndex.end());
+                            std::shuffle(randomIndex.begin(), randomIndex.end(), std::default_random_engine{});
     
                             bool isBoss = true;
     

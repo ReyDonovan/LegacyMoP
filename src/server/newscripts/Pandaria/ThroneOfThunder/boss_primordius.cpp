@@ -18,6 +18,7 @@
 
 #include "NewScriptPCH.h"
 #include "throne_of_thunder.h"
+#include <random>
 
 enum eSpells
 {
@@ -524,7 +525,7 @@ public:
                         //active new random mutation
                         if (!evolutionspelllist.empty())
                         {
-                            std::random_shuffle(evolutionspelllist.begin(), evolutionspelllist.end());
+                            std::shuffle(evolutionspelllist.begin(), evolutionspelllist.end(), std::default_random_engine{});
                             for (std::vector<uint32>::const_iterator itr = evolutionspelllist.begin(); itr != evolutionspelllist.end(); itr++)
                             {
                                 if (!GetCaster()->HasAura(*itr) && removedmutation != (*itr))
@@ -544,7 +545,7 @@ public:
                     //active new random mutation
                     if (!evolutionspelllist.empty())
                     {
-                        std::random_shuffle(evolutionspelllist.begin(), evolutionspelllist.end());
+                        std::shuffle(evolutionspelllist.begin(), evolutionspelllist.end(), std::default_random_engine{});
                         for (std::vector<uint32>::const_iterator itr = evolutionspelllist.begin(); itr != evolutionspelllist.end(); itr++)
                         {
                             if (!GetCaster()->HasAura(*itr))
