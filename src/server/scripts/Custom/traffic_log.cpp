@@ -11,7 +11,7 @@ class Value
     Value(uint32 p, uint64 v ) : pos(p), value(v) {}
 };
 
-struct member_less : public std::binary_function<Value, Value, bool>
+struct member_less //: public std::binary_function<Value, Value, bool>
 {
         bool operator()(const Value& m1, const Value& m2) const
         { return m1.value > m2.value; }

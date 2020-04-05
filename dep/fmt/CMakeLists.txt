@@ -9,27 +9,44 @@
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 include(CheckSymbolExists)
-if (WIN32)
+
+set(strtod_l_headers stdlib.h)
+
+if(WIN32)
   check_symbol_exists(open io.h HAVE_OPEN)
-else ()
+  check_symbol_exists(_strtod_l "${strtod_l_headers}" HAVE_STRTOD_L)
+else()
   check_symbol_exists(open fcntl.h HAVE_OPEN)
-endif ()
+  check_symbol_exists(strtod_l "${strtod_l_headers}" HAVE_STRTOD_L)
+endif()
 
-set(FMT_SOURCES
-  ${CMAKE_CURRENT_SOURCE_DIR}/fmt/container.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/fmt/format.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/fmt/format.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/fmt/ostream.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/fmt/ostream.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/fmt/printf.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/fmt/printf.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/fmt/string.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/fmt/time.h)
+function(add_headers VAR)
+  set(headers ${${VAR}})
+  foreach (header ${ARGN})
+    set(headers ${headers} fmt/${header})
+  endforeach()
+  set(${VAR} ${headers} PARENT_SCOPE)
+endfunction()
 
-if (HAVE_OPEN)
-  set(FMT_SOURCES ${FMT_SOURCES}
-    ${CMAKE_CURRENT_SOURCE_DIR}/fmt/posix.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/fmt/posix.cc)
+# Define the fmt library, its includes and the needed defines.
+add_headers(FMT_HEADERS 
+  chrono.h 
+  color.h 
+  compile.h 
+  core.h 
+  format.h 
+  format-inl.h
+  locale.h 
+  ostream.h 
+  printf.h 
+  ranges.h
+  safe-duration-cast.h)
+ 
+set(FMT_SOURCES fmt/format.cc)
+
+if(HAVE_OPEN)
+  add_headers(FMT_HEADERS posix.h)
+  set(FMT_SOURCES ${FMT_SOURCES} fmt/posix.cc)
 endif()
 
 add_library(fmt STATIC ${FMT_SOURCES})
@@ -37,6 +54,12 @@ add_library(fmt STATIC ${FMT_SOURCES})
 target_include_directories(fmt
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR})
+
+if (HAVE_STRTOD_L)
+  target_compile_definitions(fmt 
+    PUBLIC 
+      FMT_LOCALE)
+endif()
 
 target_compile_definitions(fmt
   PUBLIC
