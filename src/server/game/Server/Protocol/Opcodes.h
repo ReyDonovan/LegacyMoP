@@ -55,7 +55,7 @@ enum Opcodes
     CMSG_AUCTION_PLACE_BID                            = 0x035E, // 5.4.1 17538
     CMSG_AUCTION_REMOVE_ITEM                          = 0x0AD7, // 5.4.1 17538
     CMSG_AUCTION_SELL_ITEM                            = 0x0746, // 5.4.1 17538
-    CMSG_AUTH_SESSION                                 = 0x14DA, // 5.4.1 17538
+    CMSG_AUTH_SESSION                                 = 0x00B2, // 5.4.8 18414
     CMSG_AUTO_DECLINE_GUILD_INVITES                   = 0x02DF, // 5.4.1 17538
     CMSG_AUTOBANK_ITEM                                = 0x0035, // 5.4.1 17538
     CMSG_AUTOEQUIP_ITEM                               = 0x0024, // 5.4.1 17538
@@ -398,7 +398,7 @@ enum Opcodes
     CMSG_PETITION_SHOW_SIGNATURES                     = 0x02FC, // 5.4.1 17538
     CMSG_PETITION_SHOWLIST                            = 0x06FC, // 5.4.1 17538
     CMSG_PETITION_SIGN                                = 0x02DE, // 5.4.1 17538
-    CMSG_PING                                         = 0x11E6, // 5.4.1 17538
+    CMSG_PING                                         = 0x0012, // 5.4.8 18414
     CMSG_PLAYED_TIME                                  = 0x1A4D, // 5.4.1 17538
     CMSG_PLAYER_LOGIN                                 = 0x01E1, // 5.4.1 17538
     CMSG_PLAYER_LOGOUT                                = 0x0EC1, // 5.4.1 17538
@@ -592,7 +592,7 @@ enum Opcodes
     SMSG_AUCTION_OWNER_NOTIFICATION                   = 0x0CA6, // 5.4.1 17538
     SMSG_AURA_UPDATE                                  = 0x0165, // 5.4.1 17538
     SMSG_AUTH_CHALLENGE                               = 0x0C5D, // 5.4.1 17538
-    SMSG_AUTH_RESPONSE                                = 0x0D05, // 5.4.1 17538
+    SMSG_AUTH_RESPONSE                                = 0x0ABA, // 5.4.8 18414
     SMSG_BARBER_SHOP_RESULT                           = 0x0126, // 5.4.1 17538
     SMSG_BATTLE_PET_DELETED                           = 0x1034, // 5.4.1 17548
     SMSG_BATTLE_PET_JOURNAL                           = 0x148C, // 5.4.1 17538
@@ -956,7 +956,7 @@ enum Opcodes
     SMSG_PLAYED_TIME                                  = 0x1086, // 5.4.1 17538
     SMSG_PLAYER_RECIPES                               = 0x0D24, // 5.4.1 17538
     SMSG_PLAYERBOUND                                  = 0x05AD, // 5.4.1 17538
-    SMSG_PONG                                         = 0x005D, // 5.4.1 17538
+    SMSG_PONG                                         = 0x1969, // 5.4.8 18414
     SMSG_POWER_UPDATE                                 = 0x09A4, // 5.4.1 17538
     SMSG_PURCHASE_STORE_PRODUCTS_UPDATED              = 0x1185, // 5.4.1 17538
     SMSG_PURCHASE_STORE_PURCHASE_LIST_UPDATED         = 0x0895, // 5.4.1 17538

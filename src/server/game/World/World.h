@@ -1042,6 +1042,9 @@ class World
         uint32 loadantispamm[PACKETS_COUNT][2];//0 maxcount, 1 time
 };
 
+typedef std::map<uint32, std::string> RealmNameMap;
+
+extern RealmNameMap realmNameStore;
 extern uint32 realmID;
 
 #define sWorld ACE_Singleton<World, ACE_Null_Mutex>::instance()

@@ -798,9 +798,25 @@ void WorldSession::Handle_Deprecated(WorldPacket& recvPacket)
 void WorldSession::SendAuthWaitQue(uint32 position)
 {
     if (position == 0)
-        SendAuthResponse(AUTH_OK);
+    {
+        WorldPacket packet(SMSG_AUTH_RESPONSE, 1);
+        packet.WriteBit(0); // has account info
+        packet.WriteBit(0); // has queue info
+        packet << uint8(AUTH_OK);
+        packet.FlushBits();
+        SendPacket(&packet);
+    }
     else
-        SendAuthResponse(AUTH_OK, true, true, position);
+    {
+        WorldPacket packet(SMSG_AUTH_RESPONSE, 6);
+        packet.WriteBit(0); // has account info
+        packet.WriteBit(1); // has queue info
+        packet.WriteBit(0); // unk queue bool
+        packet << uint8(AUTH_WAIT_QUEUE);
+        packet.FlushBits();
+        packet << uint32(position);
+        SendPacket(&packet);
+    }
 }
 
 void WorldSession::LoadGlobalAccountData()

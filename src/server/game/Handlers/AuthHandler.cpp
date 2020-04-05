@@ -20,96 +20,33 @@
 #include "WorldSession.h"
 #include "WorldPacket.h"
 
-struct ExpansionInfoStrunct
+#include <map>
+#include <set>
+#include <list>
+
+void WorldSession::SendAuthResponse(uint8 code, bool queued, uint32 queuePos)
 {
-    uint8 raceOrClass;
-    uint8 expansion;
-};
-
-ExpansionInfoStrunct classExpansionInfo[MAX_CLASSES - 1] =
-{
-    { CLASS_WARRIOR, EXP_VANILLA },
-    { CLASS_PALADIN, EXP_VANILLA },
-    { CLASS_HUNTER, EXP_VANILLA },
-    { CLASS_ROGUE, EXP_VANILLA },
-    { CLASS_PRIEST, EXP_VANILLA },
-    { CLASS_DEATH_KNIGHT, EXP_WOTLK },
-    { CLASS_SHAMAN, EXP_VANILLA },
-    { CLASS_MAGE, EXP_VANILLA },
-    { CLASS_WARLOCK, EXP_VANILLA },
-    { CLASS_MONK, EXP_PANDARIA },
-    { CLASS_DRUID, EXP_VANILLA }
-};
-
-ExpansionInfoStrunct raceExpansionInfo[MAX_PLAYABLE_RACES] =
-{
-    { RACE_HUMAN, EXP_VANILLA },
-    { RACE_ORC, EXP_VANILLA },
-    { RACE_DWARF, EXP_VANILLA },
-    { RACE_NIGHTELF, EXP_VANILLA },
-    { RACE_UNDEAD_PLAYER, EXP_VANILLA },
-    { RACE_TAUREN, EXP_VANILLA },
-    { RACE_GNOME, EXP_VANILLA },
-    { RACE_TROLL, EXP_VANILLA },
-    { RACE_GOBLIN, EXP_CATACLYSM },
-    { RACE_BLOODELF, EXP_BC },
-    { RACE_DRAENEI, EXP_BC },
-    { RACE_WORGEN, EXP_CATACLYSM },
-    { RACE_PANDAREN_NEUTRAL, EXP_PANDARIA },
-    { RACE_PANDAREN_ALLI, EXP_PANDARIA },
-    { RACE_PANDAREN_HORDE, EXP_PANDARIA }
-};
-
-void WorldSession::SendAuthResponse(uint8 code, bool hasAccountData, bool queued, uint32 queuePos)
-{
-    WorldPacket packet(SMSG_AUTH_RESPONSE);
-
-    packet << uint8(code);
-    packet.WriteBit(queued);
-    if (queued)
-        packet.WriteBit(1);
-
-    packet.WriteBit(hasAccountData);
+    uint8 count5 = 1;
     std::string realmName = sWorld->GetRealmName();
     std::string trimmedName = sWorld->GetTrimmedRealmName();
-    if (hasAccountData)
+
+    QueryResult classResult = LoginDatabase.PQuery("SELECT class, expansion FROM realm_classes WHERE realmId = %u", realmID);
+    QueryResult raceResult = LoginDatabase.PQuery("SELECT race, expansion FROM realm_races WHERE realmId = %u", realmID);
+
+    if (!classResult || !raceResult)
     {
-        uint8 count5 = 1;
-        packet.WriteBit(0);
-        packet.WriteBits(count5, 21);
-        packet.WriteBits(0, 21);
-        packet.WriteBits(MAX_PLAYABLE_RACES, 23);
-        packet.WriteBit(0);
-        packet.WriteBit(0);
+        TC_LOG_ERROR("network", "Unable to retrieve class or race data.");
+        return;
+    }
 
-        for (uint8 i = 0; i < count5; ++i)
-        {
-            packet.WriteBits(realmName.size(), 8);
-            packet.WriteBit(1);
-            packet.WriteBits(trimmedName.size(), 8);
-        }
+    TC_LOG_DEBUG("network", "SMSG_AUTH_RESPONSE");
+    WorldPacket packet(SMSG_AUTH_RESPONSE, 80);
 
-        packet.WriteBit(0);
-        packet.WriteBits(MAX_CLASSES - 1, 23);
+    packet.WriteBit(code == AUTH_OK);
 
-        packet << uint32(0);
-        packet << uint32(0);
-        packet << uint8(Expansion());
-
-        for (uint8 i = 0; i < MAX_PLAYABLE_RACES; ++i)
-        {
-            packet << uint8(raceExpansionInfo[i].expansion);
-            packet << uint8(raceExpansionInfo[i].raceOrClass);
-        }
-
-        packet << uint8(Expansion());
-        packet << uint32(0);
-
-        for (uint8 i = 0; i < MAX_CLASSES - 1; ++i)
-        {
-            packet << uint8(classExpansionInfo[i].raceOrClass);
-            packet << uint8(classExpansionInfo[i].expansion);
-        }
+    if (code == AUTH_OK)
+    {
+        packet.WriteBits(0, 21); // Send current realmId
 
         for (uint8 i = 0; i < count5; ++i)
         {
@@ -118,12 +55,64 @@ void WorldSession::SendAuthResponse(uint8 code, bool hasAccountData, bool queued
             packet << uint32(realmID);
         }
 
-        packet << uint32(0);    //2957796664... 3495927968
-        packet << uint32(0);    //69076... 43190
+        packet.WriteBits(classResult->GetRowCount(), 23);
+        packet.WriteBits(0, 21);
+        packet.WriteBit(0);
+        packet.WriteBit(0);
+        packet.WriteBit(0);
+        packet.WriteBit(0);
+        packet.WriteBits(raceResult->GetRowCount(), 23);
+        packet.WriteBit(0);
     }
 
+    packet.WriteBit(queued);
+
     if (queued)
-        packet << uint32(queuePos);
+        packet.WriteBit(1);                             // Unknown
+
+    packet.FlushBits();
+
+    if (queued)
+        packet << uint32(0);                            // Unknown
+
+    if (code == AUTH_OK)
+    {
+        for (uint8 i = 0; i < count5; ++i)
+        {
+            packet.WriteBit(1);
+            packet.WriteBits(realmName.size(), 8);
+            packet.WriteBits(trimmedName.size(), 8);
+        }
+
+        do
+        {
+            Field* fields = raceResult->Fetch();
+
+            packet << fields[1].GetUInt8();
+            packet << fields[0].GetUInt8();
+        }
+        while (raceResult->NextRow());
+
+        do
+        {
+            Field* fields = classResult->Fetch();
+
+            packet << fields[1].GetUInt8();
+            packet << fields[0].GetUInt8();
+        }
+        while (classResult->NextRow());
+
+        packet << uint32(0);
+        packet << uint8(Expansion());
+        packet << uint32(Expansion());
+        packet << uint32(0);
+        packet << uint8(Expansion());
+        packet << uint32(0);
+        packet << uint32(0);
+        packet << uint32(0);
+    }
+
+    packet << uint8(code);                             // Auth response ?
 
     SendPacket(&packet);
 }
